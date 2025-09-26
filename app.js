@@ -5,36 +5,28 @@ let coinLabel = document.querySelector(".coinLabel");
 
 coin.src = "resources/heads.svg";
 
-// restart animation
-function restartAnimation(el) {
-  el.classList.remove("active");
-  el.classList.remove("randomActive");
-  void el.offsetWidth;
-  el.classList.add("active");
-  el.classList.add("randomActive")
+ 
+function restartAnimation(el, className) {
+  el.classList.remove(className);
+  void el.offsetWidth; 
+  el.classList.add(className);
 }
 
-// my flip logic
-function flip(result) {
-  restartAnimation(coin);
-  restartAnimation(shadow);
-
-
-  coin.addEventListener("animationend", () => {
-    coin.src = `resources/${result}.svg`;
-    coinLabel.textContent = result.toUpperCase();
-  }, { once: true });
+function setResult(result) {
+  coin.src = `resources/${result}.svg`;
+  coinLabel.textContent = result.toUpperCase();
 }
 
-// coin click = toggle
+ 
 coin.addEventListener("click", () => {
   let result = coin.src.includes("heads.svg") ? "tails" : "heads";
-  flip(result);
+  setTimeout(() => setResult(result), 300);
+
+  restartAnimation(coin, "flip");
 });
 
-// button click = random
 button.addEventListener("click", () => {
-    restartAnimation(button);
   let result = Math.random() < 0.5 ? "heads" : "tails";
-  flip(result);
+  setTimeout(() => setResult(result), 1000);
+  restartAnimation(coin, "spin");
 });
